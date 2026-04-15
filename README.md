@@ -2,80 +2,78 @@
 
 一个面向 Hermes 的“开箱即用”技能包。
 
-目标很直接：
-- 只装这一个 Skill
-- 单个 cron 内跑完整流程
-- 自动选题、调研、配图、画架构图、写文章、校验、发草稿
-- 不再额外依赖 `architecture-diagram`、`orchestrator` 之类外部 Skill 才能工作
+> 目标很直接：只装这一个 Skill，就能在单个 cron 任务里完成公众号自动发文全流程。
 
 ---
 
-## 这是什么
+## ✨ 这是什么
 
-这是我把“公众号自动发文”这套流程，重新打包成的一个独立 Skill：
+这是我把“公众号自动发文”整套链路，重新打包成的一个独立 Skill：
 
 `wechat-auto-publishing-one-click`
 
-它把下面这些能力都放进来了：
+它不是单纯的“写文章模板”，而是一整套可复用的内容生产流水线，包含：
 
-- GitHub 选题研究
-- 子 Agent 并行调研模板
-- Twitter / GitHub 真实素材抓取规则
-- 真实封面规则
+- 选题研究
+- 子 Agent 并行调研
+- GitHub / Twitter 真实素材抓取
+- 独立真实封面规则
 - 架构图 PNG 生成
 - 中文公众号文章模板
 - preflight 发布前校验
-- 草稿发布模板
+- 微信草稿发布模板
 - bootstrap 自举脚本
 
 ---
 
-## 适合谁
+## 🚀 它能解决什么问题
 
-适合这几类人：
+如果你也在做 AI / 开源项目公众号，通常会踩这些坑：
 
-1. 想做“AI / 开源项目解读”公众号的人
-2. 已经在用 Hermes，希望把发文流程自动化的人
-3. 不想手动拼装一堆 Skill、脚本、规则的人
-4. 想把整个流程分享给别人，降低上手门槛的人
+- 文章能写出来，但结构很散
+- 会自动发稿，但封面像 AI 拼出来的假图
+- 有内容，没有真正可用的项目架构图
+- 想做单 cron 自动化，但流程一长就乱
+- 想分享给别人，还得再装一堆 Skill 和脚本
 
----
-
-## 这个 Skill 能做什么
-
-单次运行里，默认按下面这条链路执行：
-
-1. 初始化工作区
-2. 并行调研候选项目
-3. 收集真实用户反馈
-4. 准备 GitHub / README / Twitter 真实图片
-5. 生成项目架构图 PNG
-6. 写成公众号文章
-7. 做发布前校验
-8. 发布到微信公众号草稿箱
-
-也就是说，它不是“帮你写一段文案”，而是完整的“内容生产流水线”。
+这个仓库就是专门解决这些问题的。
 
 ---
 
-## 关键约束
+## 🧩 内置能力
 
-这套 Skill 有几个硬规则：
+目前内置的核心能力：
 
-- 封面不能用 AI 生图
-- 封面必须来自 GitHub 或 Twitter/X 的真实项目图片/截图
-- 架构图最终产物必须是 PNG
-- 必须在一个 cron 任务里完成，不拆多段定时任务
-- 作者名默认固定为：`老夏的金库`
-- 默认发布模式是：`draft_only`
-
-这些规则不是装饰，是为了保证最终成品更像“真公众号文章”，而不是测试稿。
+1. GitHub 候选项目筛选
+2. 用户反馈调研模板
+3. 子 Agent 并行调研模板
+4. GitHub / README / Twitter 真实图片规则
+5. 独立封面规则
+6. 架构图 HTML → PNG 渲染
+7. 中文公众号文章模板
+8. preflight 校验
+9. draft_only 发布模板
+10. 单 cron 提示词模板
+11. bootstrap 自举安装脚本
 
 ---
 
-## 目录结构
+## 📌 强约束
 
-仓库里最核心的部分是：
+这套 Skill 有几个我强制写死的规则：
+
+- 封面禁止 AI 生图
+- 封面必须来自 GitHub 或 Twitter/X 真实项目图
+- 架构图最终必须输出 PNG
+- 必须在一个 cron 任务内完成，不拆多段 cron
+- 默认作者名固定：`老夏的金库`
+- 默认发布模式：`draft_only`
+
+这些规则不是装饰，而是为了让成品更像“真正能发的公众号稿件”，而不是测试稿。
+
+---
+
+## 🗂️ 仓库结构
 
 ```text
 wechat-auto-publishing-one-click/
@@ -101,15 +99,15 @@ wechat-auto-publishing-one-click/
 
 ---
 
-## 安装方式
+## 🛠️ 安装方式
 
-把整个目录复制到 Hermes skills 目录：
+把整个 Skill 目录复制到 Hermes：
 
 ```bash
 cp -r wechat-auto-publishing-one-click ~/.hermes/skills/
 ```
 
-然后运行自举脚本：
+然后进入目录执行：
 
 ```bash
 cd ~/.hermes/skills/wechat-auto-publishing-one-click
@@ -118,16 +116,16 @@ bash scripts/bootstrap.sh
 
 ---
 
-## 需要的环境
+## 🧪 环境要求
 
-建议机器至少具备：
+建议环境至少具备：
 
 - `python3`
 - `node`
 - `npm`
-- `chromium` 或可被 Playwright 调起的浏览器
+- `chromium`（或可被 Playwright 拉起的浏览器）
 
-bootstrap 会尽量帮你补：
+bootstrap 会尽量补这些依赖：
 
 - `pillow`
 - `playwright`
@@ -135,19 +133,19 @@ bootstrap 会尽量帮你补：
 - `pyyaml`
 - `requests`
 
-但是否能成功安装，还是取决于你的系统环境。
+但如果你是极简环境，还是要自己确认能安装成功。
 
 ---
 
-## 配置方式
+## ⚙️ 配置方式
 
-参考：
+参考这个模板：
 
 ```text
 templates/env.example.txt
 ```
 
-你至少要准备自己的：
+至少需要你自己填：
 
 - `WECHAT_APP_ID`
 - `WECHAT_APP_SECRET`
@@ -158,53 +156,45 @@ templates/env.example.txt
 
 ---
 
-## 怎么接到 Hermes cron
+## ⏱️ 如何接入 Hermes cron
 
-最简单的方式：
+最简单的方法：
 
-直接把下面这个文件内容，当成 cron prompt：
+直接把这个文件内容作为 cron prompt：
 
 ```text
 templates/cron_prompt.txt
 ```
 
-然后在 Hermes 里创建一个单 cron 任务，让它一次跑完整流程。
+这样一个 cron 就能完成：
+
+1. 初始化
+2. research
+3. 素材准备
+4. 架构图生成
+5. 写文章
+6. preflight
+7. 草稿发布
 
 ---
 
-## 生成的关键产物
+## 🖼️ 为什么要单独做架构图 PNG
 
-正常跑完后，至少应该看到这些文件：
+很多“自动发文”方案，最后都停在：
 
-- `output/project_candidates.json`
-- `output/project_meta.json`
-- `output/user_signals.json`
-- `output/architecture_notes.md`
-- `output/research_report.json`
-- `output/asset_report.json`
-- `output/architecture-diagram.html`
-- `images/arch.png`
-- `cover.png`
-- `article.md`
-- `output/preflight_report.json`
-- `output/full_publish_result.json`
+- 有一堆字
+- 没有真正可读的系统结构图
 
-如果这些不齐，说明流程没真正走完。
+这个 Skill 里，架构图是明确阶段，而且强制输出 PNG。
 
----
+原因很简单：
 
-## 为什么要单独做架构图 PNG
-
-很多“自动发文”方案，最后都停在“有文字、没结构”。
-
-我这里把架构图单独做成一个明确阶段，而且强制输出 PNG，是因为：
-
-- PNG 更适合直接嵌入公众号正文
-- 比纯 HTML 中间产物更稳定
+- PNG 更适合直接插进公众号正文
+- 比纯 HTML 中间文件更稳定
 - 更容易做 preflight 校验
-- 也更符合真正发布时的素材需求
+- 也更符合真实发布素材需求
 
-脚本在这里：
+生成方式：
 
 ```bash
 python3 scripts/render_arch_png.py \
@@ -216,18 +206,24 @@ python3 scripts/render_arch_png.py \
 
 ---
 
-## 为什么封面禁止 AI 生图
+## 🖼️ 为什么封面禁止 AI 生图
 
-因为 AI 生成封面虽然快，但很容易“假、空、泛”。
+因为 AI 生图虽然快，但很容易出现这些问题：
 
-真正适合公众号封面的，往往还是：
+- 看起来很假
+- 信息密度低
+- 和项目本身没关系
+- 一眼像“生成稿”
+
+真正适合作为封面的，往往还是：
 
 - GitHub README 图
-- 项目 Dashboard 截图
+- 仓库首页截图
+- Dashboard 截图
 - 官方功能图
-- Twitter / X 上项目相关真实截图
+- Twitter/X 项目实图
 
-所以这个 Skill 里明确规定：
+所以这里明确规定：
 
 - 不允许 AI 生图当封面
 - 不允许纯文字卡片当封面
@@ -244,7 +240,28 @@ python3 scripts/make_real_cover.py \
 
 ---
 
-## 成功标准
+## 📄 会产出哪些文件
+
+正常跑完，至少应该看到这些：
+
+- `output/project_candidates.json`
+- `output/project_meta.json`
+- `output/user_signals.json`
+- `output/architecture_notes.md`
+- `output/research_report.json`
+- `output/asset_report.json`
+- `output/architecture-diagram.html`
+- `images/arch.png`
+- `cover.png`
+- `article.md`
+- `output/preflight_report.json`
+- `output/full_publish_result.json`
+
+这些文件不齐，就说明流程并没有真正完成。
+
+---
+
+## ✅ 成功标准
 
 只有同时满足这些，才算真正成功：
 
@@ -256,11 +273,11 @@ python3 scripts/make_real_cover.py \
 - `preflight` 通过
 - 微信草稿创建成功
 
-也就是说，不是“能发出去就算赢”，而是“成品质量过线才算赢”。
+也就是说，不是“发出去了就算完”，而是“成品质量过线才算完”。
 
 ---
 
-## 如果你要分享给别人
+## 🤝 如果你要分享给别人
 
 最推荐的方式就是：
 
@@ -270,22 +287,28 @@ python3 scripts/make_real_cover.py \
 4. 配好 `.env`
 5. 把 `templates/cron_prompt.txt` 接进 Hermes cron
 
-这样别人不用再自己一点点拼。
+这样别人不用再自己一点点拼 Skill、脚本和规则。
 
 ---
 
-## 当前状态
+## 📍 当前状态
 
-这个仓库现在已经是一个“可分享、可复用、可继续迭代”的版本。
+这个仓库现在已经是一个：
 
-它不保证在所有机器上 100% 零配置成功，
-但已经把最麻烦的那部分——流程、规则、脚本、模板——全部收进来了。
+- 可分享
+- 可复用
+- 可继续迭代
 
-如果你也在做 Hermes 的公众号自动化，这个仓库应该能直接省掉你一大半折腾时间。
+的一键 Skill 版本。
+
+它不保证在所有系统上都 100% 零配置即用，
+但已经把最麻烦的那部分——**规则、流程、脚本、模板、校验逻辑**——都打包进来了。
+
+如果你也在做 Hermes 的公众号自动化，这个仓库应该能直接省掉一大半折腾时间。
 
 ---
 
-## 仓库地址
+## 🔗 仓库地址
 
 ```text
 https://github.com/NanSsye/wechat-auto-publishing-one-click
