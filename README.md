@@ -17,6 +17,7 @@
 - 选题研究
 - 子 Agent 并行调研
 - GitHub / Twitter 真实素材抓取
+- 可选 Hermes Tweet Skill，用于 X/Twitter 趋势、项目素材和发布前社媒信号
 - 独立真实封面规则
 - 架构图 PNG 生成
 - 中文公众号文章模板
@@ -95,6 +96,8 @@ wechat-auto-publishing-one-click/
     ├── cron_prompt.txt
     ├── env.example.txt
     └── publish.mjs
+hermes-tweet/
+└── SKILL.md
 ```
 
 ---
@@ -105,6 +108,7 @@ wechat-auto-publishing-one-click/
 
 ```bash
 cp -r wechat-auto-publishing-one-click ~/.hermes/skills/
+cp -r hermes-tweet ~/.hermes/skills/
 ```
 
 然后进入目录执行：
